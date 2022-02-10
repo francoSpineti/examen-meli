@@ -56,7 +56,7 @@ public class SateliteServiceImpl implements ISateliteService {
 	public Validador getDataPorNombre(RequestEntity requestEntity, String nombreSatelite) {
 			Validador validador = new Validador();
 			HashMap objBody = (HashMap) requestEntity.getBody();
-			validador = this.verificarBodyParteDos(validador, objBody);
+			validador = this.verificarBodyParteDos(validador, objBody,nombreSatelite);
 			if(validador.isExito()) {
 				SateliteWrapper wrapper = new SateliteWrapper();
 				if (nombreSatelite.equalsIgnoreCase(props.getKenobi())) {
@@ -178,7 +178,7 @@ public class SateliteServiceImpl implements ISateliteService {
 		return validador;
 	}
 	
-	private Validador verificarBodyParteDos(Validador validador, HashMap objBody) {
+	private Validador verificarBodyParteDos(Validador validador, HashMap objBody,String nombreSatelite) {
 		validador.setExito(true);
 		validador.setMensaje("");
 		List<String> mensajes = (List<String>)objBody.get("mensaje");
@@ -188,6 +188,9 @@ public class SateliteServiceImpl implements ISateliteService {
 		}else if(mensajes.isEmpty() || mensajes == null) {
 			validador.setExito(false);
 			validador.setMensaje("por favor ingrese un arreglo de mensajes.");
+		}else if(nombreSatelite.isEmpty() || nombreSatelite.isBlank() || nombreSatelite == null) {
+			validador.setExito(false);
+			validador.setMensaje("por favor ingrese el nombre del satelite.");
 		}
 		return validador;
 	}
